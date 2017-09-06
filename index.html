@@ -23,35 +23,19 @@
             this.dy = options.dy || 0;
             this.dWidth = options.dWidth || options.width;
             this.dHeight = options.dHeight || options.height;
-            this.frameIndex = 0,
-            this.tickCount = 0,
-            this.ticksPerFrame = options.ticksPerFrame || 0;
-            this.numberOfFrames = options.numberOfFrames || 1;
-          }
-
-          update() {
-            this.tickCount += 1;
-
-            if (this.tickCount > this.ticksPerFrame) {
-              this.tickCount = 0;
-
-              if (this.frameIndex < this.numberOfFrames - 1) {
-                this.frameIndex += 1;
-              }
-            }
           }
 
           render() {
             this.image.onload = () => {
               this.context.drawImage(
                 this.image,
-                this.frameIndex * this.sx / this.numberOfFrames,
+                this.sx,
                 this.sy,
-                this.sWidth / this.numberOfFrames,
+                this.sWidth,
                 this.sHeight,
                 this.dx,
                 this.dy,
-                this.dWidth / this.numberOfFrames,
+                this.dWidth,
                 this.dHeight,
               )
             }
@@ -87,8 +71,6 @@
 
         brick.render();
         player.render();
-
-        debugger
 
         ctx.fillStyle = 'grey';
         ctx.fillRect(0, 0, 50, 50);
