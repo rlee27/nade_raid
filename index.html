@@ -6,8 +6,45 @@
     <link rel="stylesheet" href="assets/stylesheets/canvas.css">
     <script type="text/javascript">
       document.addEventListener("DOMContentLoaded", () => {
-        const canvas = document.getElementById('game-container')
-        const ctx = canvas.getContext('2d')
+        const canvas = document.getElementById('game-container');
+        const ctx = canvas.getContext('2d');
+        const brickImage = new Image ();
+        brickImage.src = "./assets/brick_block.png";
+
+        class Sprite {
+          constructor(options) {
+            this.context = options.context;
+            this.width = options.width;
+            this.height = options.height;
+            this.image = options.image;
+          }
+
+          render() {
+            this.image.onload = () => {
+              this.context.drawImage(
+                this.image,
+                0,
+                0,
+                this.width,
+                this.height,
+                0,
+                0,
+                this.width,
+                this.height,
+              )
+            }
+          }
+        }
+
+        const brick = new Sprite({
+          context: ctx,
+          width: 50,
+          height: 50,
+          image: brickImage,
+        });
+
+        brick.render();
+
         ctx.fillStyle = 'grey';
         ctx.fillRect(0, 0, 50, 50);
         ctx.fillRect(50, 0, 50, 50);
@@ -23,6 +60,7 @@
         ctx.fillRect(550, 0, 50, 50);
         ctx.fillRect(600, 0, 50, 50);
         ctx.fillRect(650, 0, 50, 50);
+        ctx.fillRect(700, 0, 50, 50);
         ctx.fillRect(0, 600, 50, 50);
         ctx.fillRect(50, 600, 50, 50);
         ctx.fillRect(100, 600, 50, 50);
@@ -37,6 +75,8 @@
         ctx.fillRect(550, 600, 50, 50);
         ctx.fillRect(600, 600, 50, 50);
         ctx.fillRect(650, 600, 50, 50);
+        ctx.fillRect(700, 600, 50, 50);
+
         ctx.fillRect(0, 50, 50, 50);
         ctx.fillRect(0, 100, 50, 50);
         ctx.fillRect(0, 150, 50, 50);
@@ -48,21 +88,58 @@
         ctx.fillRect(0, 450, 50, 50);
         ctx.fillRect(0, 500, 50, 50);
         ctx.fillRect(0, 550, 50, 50);
-        ctx.fillRect(650, 50, 50, 50);
-        ctx.fillRect(650, 100, 50, 50);
-        ctx.fillRect(650, 150, 50, 50);
-        ctx.fillRect(650, 200, 50, 50);
-        ctx.fillRect(650, 250, 50, 50);
-        ctx.fillRect(650, 300, 50, 50);
-        ctx.fillRect(650, 350, 50, 50);
-        ctx.fillRect(650, 400, 50, 50);
-        ctx.fillRect(650, 450, 50, 50);
-        ctx.fillRect(650, 500, 50, 50);
-        ctx.fillRect(650, 550, 50, 50);
+
+        ctx.fillRect(700, 50, 50, 50);
+        ctx.fillRect(700, 100, 50, 50);
+        ctx.fillRect(700, 150, 50, 50);
+        ctx.fillRect(700, 200, 50, 50);
+        ctx.fillRect(700, 250, 50, 50);
+        ctx.fillRect(700, 300, 50, 50);
+        ctx.fillRect(700, 350, 50, 50);
+        ctx.fillRect(700, 400, 50, 50);
+        ctx.fillRect(700, 450, 50, 50);
+        ctx.fillRect(700, 500, 50, 50);
+        ctx.fillRect(700, 550, 50, 50);
+
+        ctx.fillRect(100, 100, 50, 50);
+        ctx.fillRect(100, 200, 50, 50);
+        ctx.fillRect(100, 300, 50, 50);
+        ctx.fillRect(100, 400, 50, 50);
+        ctx.fillRect(100, 500, 50, 50);
+
+        ctx.fillRect(200, 100, 50, 50);
+        ctx.fillRect(200, 200, 50, 50);
+        ctx.fillRect(200, 300, 50, 50);
+        ctx.fillRect(200, 400, 50, 50);
+        ctx.fillRect(200, 500, 50, 50);
+
+        ctx.fillRect(300, 100, 50, 50);
+        ctx.fillRect(300, 200, 50, 50);
+        ctx.fillRect(300, 300, 50, 50);
+        ctx.fillRect(300, 400, 50, 50);
+        ctx.fillRect(300, 500, 50, 50);
+
+        ctx.fillRect(400, 100, 50, 50);
+        ctx.fillRect(400, 200, 50, 50);
+        ctx.fillRect(400, 300, 50, 50);
+        ctx.fillRect(400, 400, 50, 50);
+        ctx.fillRect(400, 500, 50, 50);
+
+        ctx.fillRect(500, 100, 50, 50);
+        ctx.fillRect(500, 200, 50, 50);
+        ctx.fillRect(500, 300, 50, 50);
+        ctx.fillRect(500, 400, 50, 50);
+        ctx.fillRect(500, 500, 50, 50);
+
+        ctx.fillRect(600, 100, 50, 50);
+        ctx.fillRect(600, 200, 50, 50);
+        ctx.fillRect(600, 300, 50, 50);
+        ctx.fillRect(600, 400, 50, 50);
+        ctx.fillRect(600, 500, 50, 50);
       })
     </script>
   </head>
   <body>
-    <canvas id="game-container" width="700" height="650"></canvas>
+    <canvas id="game-container" width="750" height="650"></canvas>
   </body>
 </html>
