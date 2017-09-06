@@ -14,23 +14,29 @@
         class Sprite {
           constructor(options) {
             this.context = options.context;
-            this.width = options.width;
-            this.height = options.height;
             this.image = options.image;
+            this.sx = options.sx || 0;
+            this.sy = options.sy || 0;
+            this.sWidth = options.sWidth || options.width;
+            this.sHeight = options.sHeight || options.height;
+            this.dx = options.dx || 0;
+            this.dy = options.dy || 0;
+            this.dWidth = options.dWidth || options.width;
+            this.dHeight = options.dHeight || options.height;
           }
 
           render() {
             this.image.onload = () => {
               this.context.drawImage(
                 this.image,
-                0,
-                0,
-                this.width,
-                this.height,
-                0,
-                0,
-                this.width,
-                this.height,
+                this.sx,
+                this.sy,
+                this.sHeight,
+                this.sWidth,
+                this.dx,
+                this.dy,
+                this.dWidth,
+                this.dHeight,
               )
             }
           }
@@ -38,9 +44,13 @@
 
         const brick = new Sprite({
           context: ctx,
-          width: 50,
-          height: 50,
           image: brickImage,
+          sx: 3,
+          sy: 4,
+          sWidth: 15,
+          sHeight: 15,
+          dWidth: 50,
+          dHeight: 50,
         });
 
         brick.render();
