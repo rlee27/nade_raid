@@ -9,7 +9,7 @@
         const canvas = document.getElementById('game-container');
         const ctx = canvas.getContext('2d');
         const brickImage = new Image ();
-        brickImage.src = "./assets/brick_block.png";
+        brickImage.src = "./assets/block.png";
 
         class Sprite {
           constructor(options) {
@@ -23,19 +23,35 @@
             this.dy = options.dy || 0;
             this.dWidth = options.dWidth || options.width;
             this.dHeight = options.dHeight || options.height;
+            this.frameIndex = 0,
+            this.tickCount = 0,
+            this.ticksPerFrame = options.ticksPerFrame || 0;
+            this.numberOfFrames = options.numberOfFrames || 1;
+          }
+
+          update() {
+            this.tickCount += 1;
+
+            if (this.tickCount > this.ticksPerFrame) {
+              this.tickCount = 0;
+
+              if (this.frameIndex < this.numberOfFrames - 1) {
+                this.frameIndex += 1;
+              }
+            }
           }
 
           render() {
             this.image.onload = () => {
               this.context.drawImage(
                 this.image,
-                this.sx,
+                this.frameIndex * this.sx / this.numberOfFrames,
                 this.sy,
+                this.sWidth / this.numberOfFrames,
                 this.sHeight,
-                this.sWidth,
                 this.dx,
                 this.dy,
-                this.dWidth,
+                this.dWidth / this.numberOfFrames,
                 this.dHeight,
               )
             }
@@ -45,15 +61,34 @@
         const brick = new Sprite({
           context: ctx,
           image: brickImage,
-          sx: 3,
-          sy: 4,
-          sWidth: 15,
-          sHeight: 15,
+          sx: 2,
+          sy: 1,
+          sWidth: 32,
+          sHeight: 32,
+          dWidth: 50,
+          dHeight: 50,
+        });
+
+        const playerImage = new Image ();
+        playerImage.src = "./assets/main_sprites.jpg"
+
+        const player = new Sprite({
+          context: ctx,
+          image: playerImage,
+          sx: 39,
+          sy: 162,
+          sWidth: 25,
+          sHeight: 25,
+          dx: 50,
+          dy: 50,
           dWidth: 50,
           dHeight: 50,
         });
 
         brick.render();
+        player.render();
+
+        debugger
 
         ctx.fillStyle = 'grey';
         ctx.fillRect(0, 0, 50, 50);
