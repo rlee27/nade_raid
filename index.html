@@ -8,10 +8,11 @@
       document.addEventListener("DOMContentLoaded", () => {
         const canvas = document.getElementById('game-container');
         const ctx = canvas.getContext('2d');
+        const sprites = [];
 
         class Sprite {
           constructor(options) {
-            this.context = options.context;
+            this.context = options.context || ctx;
             this.image = options.image;
             this.sx = options.sx || 0;
             this.sy = options.sy || 0;
@@ -44,6 +45,30 @@
           }
         }
 
+        class Bomb extends Sprite {
+          constructor(options) {
+            super(options);
+            this.frameIndex = 0;
+            this.numFrames = 3;
+          }
+
+          update() {
+            this.context.clearRect(
+              this.dx,
+              this.dy,
+              this.dWidth,
+              this.dHeight,
+            )
+
+            this.frameIndex = this.frameIndex % this.numFrames;
+
+            this.sx = 0;
+            this.sy = bombSheetImage.width / 13 + (this.frameIndex);
+
+            this.draw();
+          }
+        }
+
         const brickImage = new Image ();
         brickImage.src = "./assets/block.png";
         const brick = new Sprite({
@@ -62,6 +87,12 @@
         playerSheetImage.src = "./assets/player_white.png"
         const playerWidth = 412 / 14;
         const playerHeight = 1101 / 38;
+
+        const bombSheetImage = new Image (376, 76);
+        bombSheetImage.src = "./assets/bomb_sheet.png";
+        const bombWidth = bombSheetImage.width / 13;
+        const bombHeight = bombSheetImage.height / 3;
+
         class Player {
           constructor(options) {
             this.context = options.context;
@@ -122,6 +153,20 @@
             this.draw();
           }
 
+          placeBomb() {
+            const bomb = new Bomb ({
+              image: bombSheetImage,
+              dx: this.dx + 3,
+              dy: this.dy + 10,
+              sWidth: bombWidth,
+              sHeight: bombHeight,
+              dWidth: 50,
+              dHeight: 50,
+            })
+            bomb.draw();
+            sprites.push(bomb);
+          }
+
           draw() {
             this.context.drawImage(
               this.image,
@@ -157,15 +202,33 @@
         });
         player1.render();
 
+        // const bomb = new Sprite ({
+        //   context: ctx,
+        //   image: bombSheetImage,
+        //   sx: 0,
+        //   sy: 0,
+        //   sWidth: bombWidth,
+        //   sHeight: bombHeight,
+        //   dx: player1.dx,
+        //   dy: player1.dy,
+        //   dWidth: 50,
+        //   dHeight: 50,
+        // });
+        // bomb.draw();
+
         window.setInterval(() => {
           player1.frameIndex += 1;
           if (Object.values(player1.moveDirs).some((move) => move === true )) {
             player1.update(player1.dir);
           }
+          sprites.forEach((sprite) => {
+            sprite.frameIndex += 1;
+            sprite.update();
+          });
         }, 65)
 
         document.addEventListener("keydown", (e) => {
-          console.log(e)
+          console.log(e);
           switch (e.keyCode) {
             case 39: // right
               player1.dir = "right";
@@ -183,6 +246,8 @@
               player1.dir = "up";
               player1.moveDirs.up = true;
               break;
+            case 32: // space
+              player1.placeBomb();
           }
         })
 
