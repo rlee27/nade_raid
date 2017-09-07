@@ -8,8 +8,6 @@
       document.addEventListener("DOMContentLoaded", () => {
         const canvas = document.getElementById('game-container');
         const ctx = canvas.getContext('2d');
-        const brickImage = new Image ();
-        brickImage.src = "./assets/block.png";
 
         class Sprite {
           constructor(options) {
@@ -25,27 +23,102 @@
             this.dHeight = options.dHeight || options.height;
           }
 
-          move(e) {
+          draw() {
+            this.context.drawImage(
+              this.image,
+              this.sx,
+              this.sy,
+              this.sWidth,
+              this.sHeight,
+              this.dx,
+              this.dy,
+              this.dWidth,
+              this.dHeight,
+            )
+          }
+
+          render() {
+            this.image.onload = () => {
+              this.draw();
+            }
+          }
+        }
+
+        const brickImage = new Image ();
+        brickImage.src = "./assets/block.png";
+        const brick = new Sprite({
+          context: ctx,
+          image: brickImage,
+          sx: 2,
+          sy: 1,
+          sWidth: 32,
+          sHeight: 32,
+          dWidth: 50,
+          dHeight: 50,
+        });
+        brick.render();
+
+        const playerSheetImage = new Image (412, 1101);
+        playerSheetImage.src = "./assets/player_white.png"
+        const playerWidth = 412 / 14;
+        const playerHeight = 1101 / 38;
+        class Player {
+          constructor(options) {
+            this.context = options.context;
+            this.image = options.image;
+            this.sx = options.sx || 0;
+            this.sy = options.sy || 0;
+            this.sWidth = options.sWidth || options.width;
+            this.sHeight = options.sHeight || options.height;
+            this.dx = options.dx || 0;
+            this.dy = options.dy || 0;
+            this.dWidth = options.dWidth || options.width;
+            this.dHeight = options.dHeight || options.height;
+            this.moveDirs = {
+              up: false,
+              down: false,
+              left: false,
+              right: false,
+            };
+            this.dir = "down";
+            this.frameIndex = 0;
+            this.numFrames = 3;
+          }
+
+          update(dir) {
             this.context.clearRect(
               this.dx,
               this.dy,
               this.dWidth,
               this.dHeight,
             )
-            switch (e.keyCode) {
-              case 39:
-              this.dx += 5;
+
+            this.frameIndex = this.frameIndex % this.numFrames;
+
+            switch (dir) {
+              case "right":
+              this.sy = (playerSheetImage.height / 37 * 30);
+              this.sx = (playerSheetImage.width / 14 * 7) + (this.frameIndex * playerWidth);
+              this.dx += 4;
                 break;
-              case 37:
-              this.dx -= 5;
+              case "left":
+              this.sy = playerSheetImage.height / 37 * 29,
+              this.sx = playerSheetImage.width / 14 * 7 + (this.frameIndex * playerWidth),
+              this.dx -= 4;
                 break;
-              case 40:
-              this.dy += 5;
+              case "down":
+              this.sy = playerSheetImage.height / 37 * 29,
+              this.sx = playerSheetImage.width / 14 * 0 + (this.frameIndex * playerWidth),
+              this.dy += 4;
                 break;
-              case 38:
-              this.dy -= 5;
+              case "up":
+              this.sy = playerSheetImage.height / 37 * 30,
+              this.sx = playerSheetImage.width / 14 * 0 + (this.frameIndex * playerWidth),
+              this.dy -= 4;
                 break;
             }
+
+
             this.draw();
           }
 
@@ -70,132 +143,159 @@
           }
         }
 
-        const brick = new Sprite({
+        const player1 = new Player ({
           context: ctx,
-          image: brickImage,
-          sx: 2,
-          sy: 1,
-          sWidth: 32,
-          sHeight: 32,
-          dWidth: 50,
-          dHeight: 50,
-        });
-
-        const playerImage = new Image ();
-        playerImage.src = "./assets/player_white.png"
-
-        const player = new Sprite({
-          context: ctx,
-          image: playerImage,
+          image: playerSheetImage,
           sx: 0,
-          sy: (1070 * 4)/ 37,
-          sWidth: 30,
-          sHeight: 30,
-          dx: 60,
-          dy: 60,
-          dWidth: 45,
+          sy: playerSheetImage.height / 37 * 29,
+          sWidth: playerWidth,
+          sHeight: playerHeight,
+          dx: 55,
+          dy: 55,
+          dWidth: 40,
           dHeight: 45,
         });
+        player1.render();
 
-        brick.render();
-        player.render();
+        window.setInterval(() => {
+          player1.frameIndex += 1;
+          if (Object.values(player1.moveDirs).some((move) => move === true )) {
+            player1.update(player1.dir);
+          }
+        }, 65)
 
-        document.addEventListener("keydown", (res) => {
-          console.log(res)
-          player.move(res)
+        document.addEventListener("keydown", (e) => {
+          console.log(e)
+          switch (e.keyCode) {
+            case 39: // right
+              player1.dir = "right";
+              player1.moveDirs.right = true;
+              break;
+            case 37: // left
+              player1.dir = "left";
+              player1.moveDirs.left = true;
+              break;
+            case 40: // down
+              player1.dir = "down";
+              player1.moveDirs.down = true;
+              break;
+            case 38: // up
+              player1.dir = "up";
+              player1.moveDirs.up = true;
+              break;
+          }
         })
 
-        ctx.fillStyle = 'grey';
-        ctx.fillRect(0, 0, 50, 50);
-        ctx.fillRect(50, 0, 50, 50);
-        ctx.fillRect(100, 0, 50, 50);
-        ctx.fillRect(150, 0, 50, 50);
-        ctx.fillRect(200, 0, 50, 50);
-        ctx.fillRect(250, 0, 50, 50);
-        ctx.fillRect(300, 0, 50, 50);
-        ctx.fillRect(350, 0, 50, 50);
-        ctx.fillRect(400, 0, 50, 50);
-        ctx.fillRect(450, 0, 50, 50);
-        ctx.fillRect(500, 0, 50, 50);
-        ctx.fillRect(550, 0, 50, 50);
-        ctx.fillRect(600, 0, 50, 50);
-        ctx.fillRect(650, 0, 50, 50);
-        ctx.fillRect(700, 0, 50, 50);
-        ctx.fillRect(0, 600, 50, 50);
-        ctx.fillRect(50, 600, 50, 50);
-        ctx.fillRect(100, 600, 50, 50);
-        ctx.fillRect(150, 600, 50, 50);
-        ctx.fillRect(200, 600, 50, 50);
-        ctx.fillRect(250, 600, 50, 50);
-        ctx.fillRect(300, 600, 50, 50);
-        ctx.fillRect(350, 600, 50, 50);
-        ctx.fillRect(400, 600, 50, 50);
-        ctx.fillRect(450, 600, 50, 50);
-        ctx.fillRect(500, 600, 50, 50);
-        ctx.fillRect(550, 600, 50, 50);
-        ctx.fillRect(600, 600, 50, 50);
-        ctx.fillRect(650, 600, 50, 50);
-        ctx.fillRect(700, 600, 50, 50);
+        document.addEventListener("keyup", (e) => {
+          switch (e.keyCode) {
+            case 39: // right
+              player1.moveDirs.right = false;
+              break;
+            case 37: // left
+              player1.moveDirs.left = false;
+              break;
+            case 40: // down
+              player1.moveDirs.down = false;
+              break;
+            case 38: // up
+              player1.moveDirs.up = false;
+              break;
+          }
+        })
 
-        ctx.fillRect(0, 50, 50, 50);
-        ctx.fillRect(0, 100, 50, 50);
-        ctx.fillRect(0, 150, 50, 50);
-        ctx.fillRect(0, 200, 50, 50);
-        ctx.fillRect(0, 250, 50, 50);
-        ctx.fillRect(0, 300, 50, 50);
-        ctx.fillRect(0, 350, 50, 50);
-        ctx.fillRect(0, 400, 50, 50);
-        ctx.fillRect(0, 450, 50, 50);
-        ctx.fillRect(0, 500, 50, 50);
-        ctx.fillRect(0, 550, 50, 50);
 
-        ctx.fillRect(700, 50, 50, 50);
-        ctx.fillRect(700, 100, 50, 50);
-        ctx.fillRect(700, 150, 50, 50);
-        ctx.fillRect(700, 200, 50, 50);
-        ctx.fillRect(700, 250, 50, 50);
-        ctx.fillRect(700, 300, 50, 50);
-        ctx.fillRect(700, 350, 50, 50);
-        ctx.fillRect(700, 400, 50, 50);
-        ctx.fillRect(700, 450, 50, 50);
-        ctx.fillRect(700, 500, 50, 50);
-        ctx.fillRect(700, 550, 50, 50);
-
-        ctx.fillRect(100, 100, 50, 50);
-        ctx.fillRect(100, 200, 50, 50);
-        ctx.fillRect(100, 300, 50, 50);
-        ctx.fillRect(100, 400, 50, 50);
-        ctx.fillRect(100, 500, 50, 50);
-
-        ctx.fillRect(200, 100, 50, 50);
-        ctx.fillRect(200, 200, 50, 50);
-        ctx.fillRect(200, 300, 50, 50);
-        ctx.fillRect(200, 400, 50, 50);
-        ctx.fillRect(200, 500, 50, 50);
-
-        ctx.fillRect(300, 100, 50, 50);
-        ctx.fillRect(300, 200, 50, 50);
-        ctx.fillRect(300, 300, 50, 50);
-        ctx.fillRect(300, 400, 50, 50);
-        ctx.fillRect(300, 500, 50, 50);
-
-        ctx.fillRect(400, 100, 50, 50);
-        ctx.fillRect(400, 200, 50, 50);
-        ctx.fillRect(400, 300, 50, 50);
-        ctx.fillRect(400, 400, 50, 50);
-        ctx.fillRect(400, 500, 50, 50);
-
-        ctx.fillRect(500, 100, 50, 50);
-        ctx.fillRect(500, 200, 50, 50);
-        ctx.fillRect(500, 300, 50, 50);
-        ctx.fillRect(500, 400, 50, 50);
-        ctx.fillRect(500, 500, 50, 50);
-
-        ctx.fillRect(600, 100, 50, 50);
-        ctx.fillRect(600, 200, 50, 50);
-        ctx.fillRect(600, 300, 50, 50);
-        ctx.fillRect(600, 400, 50, 50);
-        ctx.fillRect(600, 500, 50, 50);
+        // Play area restrictors:
+        // ctx.fillStyle = 'grey';
+        // ctx.fillRect(0, 0, 50, 50);
+        // ctx.fillRect(50, 0, 50, 50);
+        // ctx.fillRect(100, 0, 50, 50);
+        // ctx.fillRect(150, 0, 50, 50);
+        // ctx.fillRect(200, 0, 50, 50);
+        // ctx.fillRect(250, 0, 50, 50);
+        // ctx.fillRect(300, 0, 50, 50);
+        // ctx.fillRect(350, 0, 50, 50);
+        // ctx.fillRect(400, 0, 50, 50);
+        // ctx.fillRect(450, 0, 50, 50);
+        // ctx.fillRect(500, 0, 50, 50);
+        // ctx.fillRect(550, 0, 50, 50);
+        // ctx.fillRect(600, 0, 50, 50);
+        // ctx.fillRect(650, 0, 50, 50);
+        // ctx.fillRect(700, 0, 50, 50);
+        // ctx.fillRect(0, 600, 50, 50);
+        // ctx.fillRect(50, 600, 50, 50);
+        // ctx.fillRect(100, 600, 50, 50);
+        // ctx.fillRect(150, 600, 50, 50);
+        // ctx.fillRect(200, 600, 50, 50);
+        // ctx.fillRect(250, 600, 50, 50);
+        // ctx.fillRect(300, 600, 50, 50);
+        // ctx.fillRect(350, 600, 50, 50);
+        // ctx.fillRect(400, 600, 50, 50);
+        // ctx.fillRect(450, 600, 50, 50);
+        // ctx.fillRect(500, 600, 50, 50);
+        // ctx.fillRect(550, 600, 50, 50);
+        // ctx.fillRect(600, 600, 50, 50);
+        // ctx.fillRect(650, 600, 50, 50);
+        // ctx.fillRect(700, 600, 50, 50);
+        //
+        // ctx.fillRect(0, 50, 50, 50);
+        // ctx.fillRect(0, 100, 50, 50);
+        // ctx.fillRect(0, 150, 50, 50);
+        // ctx.fillRect(0, 200, 50, 50);
+        // ctx.fillRect(0, 250, 50, 50);
+        // ctx.fillRect(0, 300, 50, 50);
+        // ctx.fillRect(0, 350, 50, 50);
+        // ctx.fillRect(0, 400, 50, 50);
+        // ctx.fillRect(0, 450, 50, 50);
+        // ctx.fillRect(0, 500, 50, 50);
+        // ctx.fillRect(0, 550, 50, 50);
+        //
+        // ctx.fillRect(700, 50, 50, 50);
+        // ctx.fillRect(700, 100, 50, 50);
+        // ctx.fillRect(700, 150, 50, 50);
+        // ctx.fillRect(700, 200, 50, 50);
+        // ctx.fillRect(700, 250, 50, 50);
+        // ctx.fillRect(700, 300, 50, 50);
+        // ctx.fillRect(700, 350, 50, 50);
+        // ctx.fillRect(700, 400, 50, 50);
+        // ctx.fillRect(700, 450, 50, 50);
+        // ctx.fillRect(700, 500, 50, 50);
+        // ctx.fillRect(700, 550, 50, 50);
+        //
+        // ctx.fillRect(100, 100, 50, 50);
+        // ctx.fillRect(100, 200, 50, 50);
+        // ctx.fillRect(100, 300, 50, 50);
+        // ctx.fillRect(100, 400, 50, 50);
+        // ctx.fillRect(100, 500, 50, 50);
+        //
+        // ctx.fillRect(200, 100, 50, 50);
+        // ctx.fillRect(200, 200, 50, 50);
+        // ctx.fillRect(200, 300, 50, 50);
+        // ctx.fillRect(200, 400, 50, 50);
+        // ctx.fillRect(200, 500, 50, 50);
+        //
+        // ctx.fillRect(300, 100, 50, 50);
+        // ctx.fillRect(300, 200, 50, 50);
+        // ctx.fillRect(300, 300, 50, 50);
+        // ctx.fillRect(300, 400, 50, 50);
+        // ctx.fillRect(300, 500, 50, 50);
+        //
+        // ctx.fillRect(400, 100, 50, 50);
+        // ctx.fillRect(400, 200, 50, 50);
+        // ctx.fillRect(400, 300, 50, 50);
+        // ctx.fillRect(400, 400, 50, 50);
+        // ctx.fillRect(400, 500, 50, 50);
+        //
+        // ctx.fillRect(500, 100, 50, 50);
+        // ctx.fillRect(500, 200, 50, 50);
+        // ctx.fillRect(500, 300, 50, 50);
+        // ctx.fillRect(500, 400, 50, 50);
+        // ctx.fillRect(500, 500, 50, 50);
+        //
+        // ctx.fillRect(600, 100, 50, 50);
+        // ctx.fillRect(600, 200, 50, 50);
+        // ctx.fillRect(600, 300, 50, 50);
+        // ctx.fillRect(600, 400, 50, 50);
+        // ctx.fillRect(600, 500, 50, 50);
       })
     </script>
   </head>
