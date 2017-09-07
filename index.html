@@ -26,105 +26,46 @@
           }
 
           move(e) {
+            this.context.clearRect(
+              this.dx,
+              this.dy,
+              this.dWidth,
+              this.dHeight,
+            )
             switch (e.keyCode) {
               case 39:
-              this.context.clearRect(
-                this.dx,
-                this.dy,
-                this.dWidth,
-                this.dHeight,
-              )
               this.dx += 5;
-              this.context.drawImage(
-                this.image,
-                this.sx,
-                this.sy,
-                this.sWidth,
-                this.sHeight,
-                this.dx,
-                this.dy,
-                this.dWidth,
-                this.dHeight,
-              )
                 break;
               case 37:
-              this.context.clearRect(
-                this.dx,
-                this.dy,
-                this.dWidth,
-                this.dHeight,
-              )
               this.dx -= 5;
-              this.context.drawImage(
-                this.image,
-                this.sx,
-                this.sy,
-                this.sWidth,
-                this.sHeight,
-                this.dx,
-                this.dy,
-                this.dWidth,
-                this.dHeight,
-              )
                 break;
               case 40:
-              this.context.clearRect(
-                this.dx,
-                this.dy,
-                this.dWidth,
-                this.dHeight,
-              )
               this.dy += 5;
-              this.context.drawImage(
-                this.image,
-                this.sx,
-                this.sy,
-                this.sWidth,
-                this.sHeight,
-                this.dx,
-                this.dy,
-                this.dWidth,
-                this.dHeight,
-              )
                 break;
               case 38:
-              this.context.clearRect(
-                this.dx,
-                this.dy,
-                this.dWidth,
-                this.dHeight,
-              )
               this.dy -= 5;
-              this.context.drawImage(
-                this.image,
-                this.sx,
-                this.sy,
-                this.sWidth,
-                this.sHeight,
-                this.dx,
-                this.dy,
-                this.dWidth,
-                this.dHeight,
-              )
                 break;
-              default:
-
             }
+            this.draw();
+          }
+
+          draw() {
+            this.context.drawImage(
+              this.image,
+              this.sx,
+              this.sy,
+              this.sWidth,
+              this.sHeight,
+              this.dx,
+              this.dy,
+              this.dWidth,
+              this.dHeight,
+            )
           }
 
           render() {
             this.image.onload = () => {
-              this.context.drawImage(
-                this.image,
-                this.sx,
-                this.sy,
-                this.sWidth,
-                this.sHeight,
-                this.dx,
-                this.dy,
-                this.dWidth,
-                this.dHeight,
-              )
+              this.draw();
             }
           }
         }
