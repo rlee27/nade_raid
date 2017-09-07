@@ -25,6 +25,93 @@
             this.dHeight = options.dHeight || options.height;
           }
 
+          move(e) {
+            switch (e.keyCode) {
+              case 39:
+              this.context.clearRect(
+                this.dx,
+                this.dy,
+                this.dWidth,
+                this.dHeight,
+              )
+              this.dx += 5;
+              this.context.drawImage(
+                this.image,
+                this.sx,
+                this.sy,
+                this.sWidth,
+                this.sHeight,
+                this.dx,
+                this.dy,
+                this.dWidth,
+                this.dHeight,
+              )
+                break;
+              case 37:
+              this.context.clearRect(
+                this.dx,
+                this.dy,
+                this.dWidth,
+                this.dHeight,
+              )
+              this.dx -= 5;
+              this.context.drawImage(
+                this.image,
+                this.sx,
+                this.sy,
+                this.sWidth,
+                this.sHeight,
+                this.dx,
+                this.dy,
+                this.dWidth,
+                this.dHeight,
+              )
+                break;
+              case 40:
+              this.context.clearRect(
+                this.dx,
+                this.dy,
+                this.dWidth,
+                this.dHeight,
+              )
+              this.dy += 5;
+              this.context.drawImage(
+                this.image,
+                this.sx,
+                this.sy,
+                this.sWidth,
+                this.sHeight,
+                this.dx,
+                this.dy,
+                this.dWidth,
+                this.dHeight,
+              )
+                break;
+              case 38:
+              this.context.clearRect(
+                this.dx,
+                this.dy,
+                this.dWidth,
+                this.dHeight,
+              )
+              this.dy -= 5;
+              this.context.drawImage(
+                this.image,
+                this.sx,
+                this.sy,
+                this.sWidth,
+                this.sHeight,
+                this.dx,
+                this.dy,
+                this.dWidth,
+                this.dHeight,
+              )
+                break;
+              default:
+
+            }
+          }
+
           render() {
             this.image.onload = () => {
               this.context.drawImage(
@@ -54,23 +141,28 @@
         });
 
         const playerImage = new Image ();
-        playerImage.src = "./assets/main_sprites.jpg"
+        playerImage.src = "./assets/player_white.png"
 
         const player = new Sprite({
           context: ctx,
           image: playerImage,
-          sx: 39,
-          sy: 162,
+          sx: 0,
+          sy: (1070 * 4)/ 37,
           sWidth: 25,
           sHeight: 25,
-          dx: 50,
-          dy: 50,
+          dx: 55,
+          dy: 55,
           dWidth: 50,
           dHeight: 50,
         });
 
         brick.render();
         player.render();
+
+        document.addEventListener("keydown", (res) => {
+          console.log(res)
+          player.move(res)
+        })
 
         ctx.fillStyle = 'grey';
         ctx.fillRect(0, 0, 50, 50);
