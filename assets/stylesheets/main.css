@@ -13,10 +13,15 @@ body {
 .sidebar-container {
   height: 650px;
   width: 175px;
-  border: 1px solid red;
+  border: 5px outset grey;
+  background-color: rgba(128, 128, 128, 0.7);
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.sidebar-container > p {
+  color: white;
 }
 
 .enter-key {
