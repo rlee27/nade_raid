@@ -4,3 +4,32 @@ body {
   display: flex;
   justify-content: center;
 }
+
+.main-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.sidebar-container {
+  height: 650px;
+  width: 175px;
+  border: 1px solid red;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.enter-key {
+  height: 60px;
+  width: 63px;
+}
+
+.arrow-keys {
+  height: 64px;
+  width: 105px;
+}
+
+.space-bar {
+  height: 34px;
+  width: 163px;
+}
