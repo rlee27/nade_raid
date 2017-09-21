@@ -77,7 +77,7 @@ p {
   cursor: pointer;
 }
 
-.story-content {
+.modal-content {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -111,4 +111,15 @@ p {
   height: 25%;
   align-items: center;
   justify-content: space-around;
+}
+
+#game-lost-modal {
+  display: none;
+  position: fixed;
+  z-index: 100;
+  top: 110px;
+  width: 760px;
+  height: 660px;
+  overflow: auto;
+  background-color: rgba(97, 85, 109, 0.6);
 }

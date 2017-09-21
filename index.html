@@ -41,8 +41,8 @@
         </div>
         <div class="canvas-container">
           <canvas id="game-canvas" width="750" height="650"></canvas>
-          <div id="story-modal">
-            <div class="story-content">
+          <div id="story-modal" class="modal">
+            <div class="modal-content">
               <span class="close">&times;</span>
               <p>Monsters have invaded the castle!</p>
               <p>You are given a stash of greNades, place them wisely.</p>
@@ -57,6 +57,14 @@
               <img src="assets/space_bar.png" alt="space-bar"
               class="space-bar">
               <p>Place Nade</p>
+            </div>
+          </div>
+          <div id="game-lost-modal" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <p>You couldn't protect the castle!</p>
+              <p>Close this to try again...</p>
+              <p>People are counting on you.</p>
             </div>
           </div>
         </div>
