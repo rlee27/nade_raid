@@ -12,6 +12,8 @@ body {
 
 .logo-container {
   align-self: center;
+  margin-top: -25px;
+  margin-bottom: -25px;
 }
 
 .game-container {
