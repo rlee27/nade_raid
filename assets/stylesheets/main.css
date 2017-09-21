@@ -32,8 +32,9 @@ body {
   margin-right: 10px;
 }
 
-.sidebar-container > p {
-  color: white;
+p {
+  font-family: 'Russo One', sans-serif;
+  color: #ffb271;
 }
 
 .enter-key {
@@ -49,4 +50,65 @@ body {
 .space-bar {
   height: 34px;
   width: 163px;
+}
+
+#story-modal {
+  display: none;
+  position: fixed;
+  z-index: 100;
+  top: 110px;
+  width: 760px;
+  height: 660px;
+  overflow: auto;
+  background-color: rgba(97, 85, 109, 0.6);
+}
+
+#story-btn {
+  font-family: 'Russo One', sans-serif;
+  padding: 5px;
+  background: #ff983d;
+  border-radius: 10px;
+  border: 2px outset black;
+  margin-top: 25px;
+}
+
+#story-btn:hover {
+  background: #bf0404;
+  cursor: pointer;
+}
+
+.story-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.close {
+  align-self: flex-end;
+  margin-right: 10px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #aaa;
+}
+
+.close:hover {
+  cursor: pointer;
+}
+
+.icon-links {
+  font-size: 30px
+}
+
+.icon {
+  color: #ffffff;
+}
+
+.profile-links {
+  margin-top: 75px;
+  display: flex;
+  flex-direction: column;
+  height: 25%;
+  align-items: center;
+  justify-content: space-around;
 }
