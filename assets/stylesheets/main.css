@@ -53,7 +53,7 @@ p {
 }
 
 #story-modal {
-  display: none;
+  display: block;
   position: fixed;
   z-index: 100;
   top: 110px;
