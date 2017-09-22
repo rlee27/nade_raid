@@ -1,46 +1,44 @@
 # Nade Raid
-### Background
-Nade Raid is a classic strategic, mazed-based game inspired by bomberman.
+A strategic, maze-based game inspired by Bomberman.
 
-### Functionality & MVP
-Nade Raid will allow users to:
-- [ ] Start game
-- [ ] Move along the board
-- [ ] Drop greNades
-- [ ] Destroy blocks
+### Live
+[Live](http://rlee.me/nade_raid)
 
-### Wireframes
-The app will be a single screen game board. The left section will consist of game controls and nav links to the GitHub repo, my LinkedIn, and my portfolio website.
+### Functionality
+Users can:
+* Start the game
+* Place bombs
+* Trap monsters
+* Move around walls with adjustment
 
-![wireframe](./assets/wireframes/wireframe.png)
+![Demo_gif](./assets/nade_raid.gif)
 
-### Architechture and Technologies
-This project will be using the following technologies:
-* `JavaScript` for game logic,
-* `Easel.js` for rendering,
+### Implementation
+This game was built using Vanilla JavaScript leveraging HTML5 Canvas API. Sprite sheets were used for all animations as showcased above. Movement was adjusted with browser's refresh rate using `requestAnimationFrame` web API to smooth out movement.
 
-### Implementation Timeline
-#### Day 1
-Set up all modules. Write a basic entry file. Learn basics of `Easel.js` and `Create.js`.
-##### Day 1 Goals:
-* Learn enough `Easel.js` to render an object
+To achieve this, time between each frame was kept track of and normalized based on a normal refresh rate of 60 frames per second:
+```js
+// game_view.js
 
-#### Day 2
-Continue to learn previously mentioned libraries. Set up the 14x13 playing board and render it on the screen with `Easel.js`. Start working on bombs
-##### Day 2 Goals:
-* Complete the board
-* Start filling the board with blocks
-* Start logic on bombs and rendering of bombs
-* Make blocks destructible
+start() {
+  ...
+  this.lastTime = 0;
+  requestAnimationFrame(this.animate.bind(this));
+}
 
-#### Day 3
-Create playable character with all functionality.
-##### Day 3 Goals:
-* Allow character to move along the grid
-* Allow character to drop bomb
+animate(time) {
+  const timeChange = time - this.lastTime;
+  ...
+  requestAnimationFrame(this.animate.bind(this));
+}
 
-#### Day 4
-Implement monsters/opponents to Destroy
-##### Day 4 Goals:
-* Automate movement for these monsters/opponents
-* Death to monsters/opponents when in impact area from bombs
+
+// player.js
+
+move(timeChange) {
+  const normalizedFrame = timeChange / (1000 / 60);
+  ...
+  this.pos += 2 * normalizedFrame;
+}
+```
+Collision detection posed a great challenge. I wanted improve playability by allowing the player to move around walls without getting stuck. When creating conditional collision detection, there were some collision conditions that matched with others causing undesirable player movement. Ultimately, I had to write out specific collision conditions until my desired outcome was met.
