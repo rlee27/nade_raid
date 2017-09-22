@@ -38,18 +38,16 @@ p {
 }
 
 .enter-key {
-  height: 60px;
-  width: 63px;
+  margin-bottom: -20px;
 }
 
 .arrow-keys {
-  height: 64px;
-  width: 105px;
+  margin-bottom: -40px;
 }
 
 .space-bar {
-  height: 34px;
-  width: 163px;
+  width: 120px;
+  margin-bottom: -13px;
 }
 
 #story-modal {
