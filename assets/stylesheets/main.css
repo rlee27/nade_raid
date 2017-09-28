@@ -1,6 +1,7 @@
 body {
   background-image: url('../background.jpg');
   background-position-x: center;
+  background-size: cover;
   display: flex;
   justify-content: center;
 }
